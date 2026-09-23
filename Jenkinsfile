@@ -111,7 +111,7 @@ pipeline {
 
             when {
                 expression {
-                    env.STAGE_3_STATUS == 'FAILED'
+                    env.STAGE_3_STATUS == 'SUCCESS'
                 }
             }
 
