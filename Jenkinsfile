@@ -57,14 +57,15 @@ pipeline {
         }
 
         stage('STAGE2') {
-            agent {
-                label 'slave2'
-            }
+            
             environment {
                 WH_STAGE = 'STAGE1'
             }
             parallel {
                 stage('sub-stage1') {
+                    agent {
+                        label 'slave2'
+                    }
                     steps {
                         echo "${env.WH_STAGE}"
                         echo "Running sub stage1"
@@ -73,6 +74,9 @@ pipeline {
                 }
 
                 stage('sub-stage2') {
+                    agent {
+                        label 'slave2'
+                    }
                     steps {
                         echo "${env.WH_STAGE}"
                         echo "Running sub stage2"
