@@ -95,6 +95,9 @@ pipeline {
                     echo "Executing the stage3"
                     sh 'exit 1'
                 }
+                script {
+                    env.stage3Result = 'FAILURE'
+                }
             }
         }
 
@@ -105,7 +108,7 @@ pipeline {
 
             when {
                 expression {
-                    env.stageResult == 'FAILURE'
+                    env.stage3Result == 'FAILURE'
                 }
             }
 
