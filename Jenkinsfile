@@ -57,14 +57,12 @@ pipeline {
         }
 
         stage('STAGE2') {
-            environment {
-                WH_STAGE = 'STAGE1'
-            }
-
             agent {
                 label 'slave2'
             }
-
+            environment {
+                WH_STAGE = 'STAGE1'
+            }
             parallel {
                 stage('sub-stage1') {
                     steps {
