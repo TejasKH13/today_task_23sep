@@ -5,11 +5,9 @@ pipeline {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
         timeout(time: 10, unit: 'SECONDS')
         timestamps
-
     }
     triggers {
         pollSCM ('H * * * *')
-
     }
     parameters {
         choice choices: ['Build', 'Test', 'Compile', 'Deploy', 'Produ'], description: ' Creating multiple options to make efficient one', name: 'Choice'
@@ -18,7 +16,6 @@ pipeline {
     environment {
         NAME = 'Pipeline'
         TYPE = 'Declarative'
-
     }
     stages {
         stage ('STAGE1') {
@@ -32,6 +29,7 @@ pipeline {
                 echo "${env.NAME}"
                 echo "${env.TYPE}"
             }
+        }
         stage ('STAGE2') {
             environment {
                 WH_STAGE = 'STAGE1'
@@ -39,14 +37,14 @@ pipeline {
             agent {
                 label 'slave2'
             }
-            parallel{
+            parallel {
                 stage ('sub-stage1'){
                     steps {
                         echo "${env.WH_STAGE}"
                         echo "Running sub stage1"
                         sh 'date'
-
                     }
+                }
                 stage ('sub-stage2') {
                     steps {
                         echo "${env.WH_STAGE}"
@@ -54,20 +52,18 @@ pipeline {
                         echo ""
                     }
                 }
-                }
             }
+        }
         stage ('stage3') {
             steps {
                 script {
                     try {
                         echo "Running stage 3"
                         sh 'exit 1'
-
                         env.STAGE_3_STATUS = "SUCCESS"
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         echo "Got some error and handling: ${e.message}"
                         env.STAGE_3_STATUS = "FAILED"
-
                     }
                 }
             }
@@ -75,16 +71,13 @@ pipeline {
         stage ('STAGE4') {
             when {
                 expression {
-                    env.STAGE_3_STATUS =='FAILED'
+                    env.STAGE_3_STATUS == 'FAILED'
                 }
             }
             steps {
                 echo "executing the stage4"
                 sh 'uptime'
             }
-        }  
-        }
-        
         }
     }
 }
