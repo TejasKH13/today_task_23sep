@@ -106,7 +106,7 @@ pipeline {
 
         stage('STAGE4') {
             agent {
-                label 'slave1'
+                label 'slave2'
             }
 
             when {
