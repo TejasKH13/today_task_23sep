@@ -91,15 +91,9 @@ pipeline {
             }
 
             steps {
-                script {
-                    try {
-                        echo "Running stage 3"
-                        sh 'exit 1'
-                        env.STAGE_3_STATUS = "SUCCESS"
-                    } catch (Exception e) {
-                        echo "Got some error and handling: ${e.message}"
-                        env.STAGE_3_STATUS = "FAILED"
-                    }
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    echo "Executing the stage3"
+                    sh 'exit 1'
                 }
             }
         }
@@ -111,7 +105,7 @@ pipeline {
 
             when {
                 expression {
-                    env.STAGE_3_STATUS == 'SUCCESS'
+                    stageResult == 'SUCCESS'
                 }
             }
 
