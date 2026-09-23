@@ -105,7 +105,7 @@ pipeline {
 
             when {
                 expression {
-                    stageResult == 'SUCCESS'
+                    stageResult == 'FAILURE'
                 }
             }
 
