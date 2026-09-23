@@ -9,7 +9,6 @@ pipeline {
             daysToKeepStr: '',
             numToKeepStr: '10'
         ))
-        timeout(time: 10, unit: 'SECONDS')
         timestamps()
     }
 
